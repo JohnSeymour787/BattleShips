@@ -143,11 +143,6 @@
     <Compile Include="src\EndingGameController.cs" />
     <Compile Include="src\GameController.cs" />
     <Compile Include="src\GameLogic.cs" />
-    <Compile Include="src\Model\Direction.cs" />
-    <Compile Include="src\Model\ISeaGrid.cs" />
-    <Compile Include="src\Model\Player.cs" />
-    <Compile Include="src\Model\ResultOfAttack.cs" />
-    <Compile Include="src\Model\SeaGrid.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SwinGame">
@@ -207,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="obj\x86\Debug-Windows\TempPE\" />
+    <Folder Include="src\Model\" />
   </ItemGroup>
   <Target Name="CopyLibsToOut">
     <Copy SourceFiles="@(WinLibs)" DestinationFolder="$(OutDir)" />
