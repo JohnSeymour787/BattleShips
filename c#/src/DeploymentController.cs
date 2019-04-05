@@ -19,10 +19,12 @@ using SwinGameSDK;
 /// ''' during the deployment phase.
 
 /// ''' </summary>
+/// 
 static class DeploymentController
 {
-    private const static int SHIPS_TOP = 98;
-    private const static int SHIPS_LEFT = 20;
+    //  I dont think you need the static part cause i think const means static - John
+    private const int SHIPS_TOP = 98;
+    private const int SHIPS_LEFT = 20;
     private const static int SHIPS_HEIGHT = 90;
     private const static int SHIPS_WIDTH = 300;
 
