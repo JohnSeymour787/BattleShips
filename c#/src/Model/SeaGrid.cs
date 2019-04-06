@@ -1,190 +1,228 @@
+/// <summary>
+/// ''' The SeaGrid is the grid upon which the ships are deployed.
+/// ''' </summary>
+/// ''' <remarks>
+/// ''' The grid is viewable via the ISeaGrid interface as a read only
+/// ''' grid. This can be used in conjuncture with the SeaGridAdapter to 
+/// ''' mask the position of the ships.
+/// ''' </remarks>
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Security;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
-''' <summary>
-''' The SeaGrid is the grid upon which the ships are deployed.
-''' </summary>
-''' <remarks>
-''' The grid is viewable via the ISeaGrid interface as a read only
-''' grid. This can be used in conjuncture with the SeaGridAdapter to 
-''' mask the position of the ships.
-''' </remarks>
-Public Class SeaGrid
-    Implements ISeaGrid
+public class SeaGrid : ISeaGrid
+{
+    private const int _WIDTH = 10;
+    private const int _HEIGHT = 10;
 
-    Private Const _WIDTH As Integer = 10
-    Private Const _HEIGHT As Integer = 10
+    /// Private _GameTiles(0 To Width - 1, 0 To Height - 1) As Tile
+// THIS NEXT LINE MIGHT BE A BUG RIGHT HERE!
+    private Tile[,] _GameTiles = new Tile[Width - 1 + 1, Height - 1 + 1];
 
-    Private _GameTiles(0 To Width - 1, 0 To Height - 1) As Tile
-    Private _Ships As Dictionary(Of ShipName, Ship)
-    Private _ShipsKilled As Integer = 0
+    private Dictionary<ShipName, Ship> _Ships;
+    private int _ShipsKilled = 0;
 
-    ''' <summary>
-    ''' The sea grid has changed and should be redrawn.
-    ''' </summary>
-    Public Event Changed As EventHandler Implements ISeaGrid.Changed
+    /// <summary>
+    ///     ''' The sea grid has changed and should be redrawn.
+    ///     ''' </summary>
+    public event EventHandler Changed;
 
-    ''' <summary>
-    ''' The width of the sea grid.
-    ''' </summary>
-    ''' <value>The width of the sea grid.</value>
-    ''' <returns>The width of the sea grid.</returns>
-    Public ReadOnly Property Width() As Integer Implements ISeaGrid.Width
-        Get
-            Return _WIDTH
-        End Get
-    End Property
+    /// <summary>
+    ///     ''' The width of the sea grid.
+    ///     ''' </summary>
+    ///     ''' <value>The width of the sea grid.</value>
+    ///     ''' <returns>The width of the sea grid.</returns>
+    public int Width
+    {
+        get
+        {
+            return _WIDTH;
+        }
+    }
 
-    ''' <summary>
-    ''' The height of the sea grid
-    ''' </summary>
-    ''' <value>The height of the sea grid</value>
-    ''' <returns>The height of the sea grid</returns>
-    Public ReadOnly Property Height() As Integer Implements ISeaGrid.Height
-        Get
-            Return _HEIGHT
-        End Get
-    End Property
+    /// <summary>
+    ///     ''' The height of the sea grid
+    ///     ''' </summary>
+    ///     ''' <value>The height of the sea grid</value>
+    ///     ''' <returns>The height of the sea grid</returns>
+    public int Height
+    {
+        get
+        {
+            return _HEIGHT;
+        }
+    }
 
-    ''' <summary>
-    ''' ShipsKilled returns the number of ships killed
-    ''' </summary>
-    Public ReadOnly Property ShipsKilled() As Integer
-        Get
-            Return _ShipsKilled
-        End Get
-    End Property
+    /// <summary>
+    ///     ''' ShipsKilled returns the number of ships killed
+    ///     ''' </summary>
+    public int ShipsKilled
+    {
+        get
+        {
+            return _ShipsKilled;
+        }
+    }
 
-    ''' <summary>
-    ''' Show the tile view
-    ''' </summary>
-    ''' <param name="x">x coordinate of the tile</param>
-    ''' <param name="y">y coordiante of the tile</param>
-    ''' <returns></returns>
-    Public ReadOnly Property Item(ByVal x As Integer, ByVal y As Integer) As TileView Implements ISeaGrid.Item
-        Get
-            Return _GameTiles(x, y).View
-        End Get
-    End Property
+    /// <summary>
+    ///     ''' Show the tile view
+    ///     ''' </summary>
+    ///     ''' <param name="x">x coordinate of the tile</param>
+    ///     ''' <param name="y">y coordiante of the tile</param>
+    ///     ''' <returns></returns>
+    public TileView Item
+    {
+        get
+        {
+            return _GameTiles(x, y).View;
+        }
+    }
 
-    ''' <summary>
-    ''' AllDeployed checks if all the ships are deployed
-    ''' </summary>
-    Public ReadOnly Property AllDeployed() As Boolean
-        Get
-            For Each s As Ship In _Ships.Values
-                If Not s.IsDeployed Then
-                    Return False
-                End If
-            Next
+    /// <summary>
+    ///     ''' AllDeployed checks if all the ships are deployed
+    ///     ''' </summary>
+    public bool AllDeployed
+    {
+        get
+        {
+            foreach (Ship s in _Ships.Values)
+            {
+                if (!s.IsDeployed)
+                    return false;
+            }
 
-            Return True
-        End Get
-    End Property
+            return true;
+        }
+    }
 
-    ''' <summary>
-    ''' SeaGrid constructor, a seagrid has a number of tiles stored in an array
-    ''' </summary>
-    Public Sub New(ByVal ships As Dictionary(Of ShipName, Ship))
-        'fill array with empty Tiles
-        Dim i as Integer
-For i  = 0 To Width - 1
-            For j As Integer = 0 To Height - 1
-                _GameTiles(i, j) = New Tile(i, j, Nothing)
-            Next
-        Next
+    /// <summary>
+    ///     ''' SeaGrid constructor, a seagrid has a number of tiles stored in an array
+    ///     ''' </summary>
+    public SeaGrid(Dictionary<ShipName, Ship> ships)
+    {
+        // fill array with empty Tiles
+        int i;
+        for (i = 0; i <= Width - 1; i++)
+        {
+            for (int j = 0; j <= Height - 1; j++)
+                _GameTiles(i, j) = new Tile(i, j, null);
+        }
 
-        _Ships = ships
-    End Sub
+        _Ships = ships;
+    }
 
-    ''' <summary>
-    ''' MoveShips allows for ships to be placed on the seagrid
-    ''' </summary>
-    ''' <param name="row">the row selected</param>
-    ''' <param name="col">the column selected</param>
-    ''' <param name="ship">the ship selected</param>
-    ''' <param name="direction">the direction the ship is going</param>
-    Public Sub MoveShip(ByVal row As Integer, ByVal col As Integer, ByVal ship As ShipName, ByVal direction As Direction)
-        Dim newShip As Ship = _Ships(ship)
-        newShip.Remove()
-        AddShip(row, col, direction, newShip)
-    End Sub
+    /// <summary>
+    ///     ''' MoveShips allows for ships to be placed on the seagrid
+    ///     ''' </summary>
+    ///     ''' <param name="row">the row selected</param>
+    ///     ''' <param name="col">the column selected</param>
+    ///     ''' <param name="ship">the ship selected</param>
+    ///     ''' <param name="direction">the direction the ship is going</param>
+    public void MoveShip(int row, int col, ShipName ship, Direction direction)
+    {
+        Ship newShip = _Ships[ship];
+        newShip.Remove();
+        AddShip(row, col, direction, newShip);
+    }
 
-    ''' <summary>
-    ''' AddShip add a ship to the SeaGrid
-    ''' </summary>
-    ''' <param name="row">row coordinate</param>
-    ''' <param name="col">col coordinate</param>
-    ''' <param name="direction">direction of ship</param>
-    ''' <param name="newShip">the ship</param>
-    Private Sub AddShip(ByVal row As Integer, ByVal col As Integer, ByVal direction As Direction, ByVal newShip As Ship)
-        Try
-            Dim size As Integer = newShip.Size
-            Dim currentRow As Integer = row
-            Dim currentCol As Integer = col
-            Dim dRow, dCol As Integer
+    /// <summary>
+    ///     ''' AddShip add a ship to the SeaGrid
+    ///     ''' </summary>
+    ///     ''' <param name="row">row coordinate</param>
+    ///     ''' <param name="col">col coordinate</param>
+    ///     ''' <param name="direction">direction of ship</param>
+    ///     ''' <param name="newShip">the ship</param>
+    private void AddShip(int row, int col, Direction direction, Ship newShip)
+    {
+        try
+        {
+            int size = newShip.Size;
+            int currentRow = row;
+            int currentCol = col;
+            int dRow, dCol;
 
-            If direction = direction.LeftRight Then
-                dRow = 0
-                dCol = 1
-            Else
-                dRow = 1
-                dCol = 0
-            End If
+            if (direction == direction.LeftRight)
+            {
+                dRow = 0;
+                dCol = 1;
+            }
+            else
+            {
+                dRow = 1;
+                dCol = 0;
+            }
 
-            'place ship's tiles in array and into ship object
-            Dim i as Integer
-For i  = 0 To size - 1
-                If currentRow < 0 Or currentRow >= Width Or currentCol < 0 Or currentCol >= Height Then
-                    Throw New InvalidOperationException("Ship can't fit on the board")
-                End If
+            // place ship's tiles in array and into ship object
+            int i;
+            for (i = 0; i <= size - 1; i++)
+            {
+                if (currentRow < 0 | currentRow >= Width | currentCol < 0 | currentCol >= Height)
+                    throw new InvalidOperationException("Ship can't fit on the board");
 
-                _GameTiles(currentRow, currentCol).Ship = newShip
+                _GameTiles(currentRow, currentCol).Ship = newShip;
 
-                currentCol += dCol
-                currentRow += dRow
-            Next
+                currentCol += dCol;
+                currentRow += dRow;
+            }
 
-            newShip.Deployed(direction, row, col)
-        Catch e As Exception
-            newShip.Remove() 'if fails remove the ship
-            Throw New ApplicationException(e.Message)
+            newShip.Deployed(direction, row, col);
+        }
+        catch (Exception e)
+        {
+            newShip.Remove(); // if fails remove the ship
+            throw new ApplicationException(e.Message);
+        }
 
-        Finally
-            RaiseEvent Changed(Me, EventArgs.Empty)
-        End Try
-    End Sub
+        finally
+        {
+            Changed?.Invoke(this, EventArgs.Empty);
+        }
+    }
 
-    ''' <summary>
-    ''' HitTile hits a tile at a row/col, and whatever tile has been hit, a
-    ''' result will be displayed.
-    ''' </summary>
-    ''' <param name="row">the row at which is being shot</param>
-    ''' <param name="col">the cloumn at which is being shot</param>
-    ''' <returns>An attackresult (hit, miss, sunk, shotalready)</returns>
-    Public Function HitTile(ByVal row As Integer, ByVal col As Integer) As AttackResult Implements ISeaGrid.HitTile
-        Try
-            'tile is already hit
-            If _GameTiles(row, col).Shot Then
-                Return New AttackResult(ResultOfAttack.ShotAlready, "have already attacked [" & col & "," & row & "]!", row, col)
-            End If
+    /// <summary>
+    ///     ''' HitTile hits a tile at a row/col, and whatever tile has been hit, a
+    ///     ''' result will be displayed.
+    ///     ''' </summary>
+    ///     ''' <param name="row">the row at which is being shot</param>
+    ///     ''' <param name="col">the cloumn at which is being shot</param>
+    ///     ''' <returns>An attackresult (hit, miss, sunk, shotalready)</returns>
+    public AttackResult HitTile(int row, int col)
+    {
+        try
+        {
+            // tile is already hit
+            if (_GameTiles(row, col).Shot)
+                return new AttackResult(ResultOfAttack.ShotAlready, "have already attacked [" + col + "," + row + "]!", row, col);
 
-            _GameTiles(row, col).Shoot()
+            _GameTiles(row, col).Shoot();
 
-            'there is no ship on the tile
-            If _GameTiles(row, col).Ship Is Nothing Then
-                Return New AttackResult(ResultOfAttack.Miss, "missed", row, col)
-            End If
+            // there is no ship on the tile
+            if (_GameTiles(row, col).Ship == null)
+                return new AttackResult(ResultOfAttack.Miss, "missed", row, col);
 
-            'all ship's tiles have been destroyed
-            If _GameTiles(row, col).Ship.IsDestroyed Then
-                _GameTiles(row, col).Shot = True
-                _ShipsKilled += 1
-                Return New AttackResult(ResultOfAttack.Destroyed, _GameTiles(row, col).Ship, "destroyed the enemy's", row, col)
-            End If
+            // all ship's tiles have been destroyed
+            if (_GameTiles(row, col).Ship.IsDestroyed)
+            {
+                _GameTiles(row, col).Shot = true;
+                _ShipsKilled += 1;
+                return new AttackResult(ResultOfAttack.Destroyed, _GameTiles(row, col).Ship, "destroyed the enemy's", row, col);
+            }
 
-            'else hit but not destroyed
-            Return New AttackResult(ResultOfAttack.Hit, "hit something!", row, col)
-        Finally
-            RaiseEvent Changed(Me, EventArgs.Empty)
-        End Try
-    End Function
-End Class
+            // else hit but not destroyed
+            return new AttackResult(ResultOfAttack.Hit, "hit something!", row, col);
+        }
+        finally
+        {
+            Changed?.Invoke(this, EventArgs.Empty);
+        }
+    }
+}
