@@ -1,4 +1,4 @@
-﻿public enum TileView
+public enum TileView
 {
     /// <summary>
     ///     ''' The viewer can see sea
