@@ -1,4 +1,4 @@
-public enum ResultOfAttack
+﻿public enum ResultOfAttack
 {
     /// <summary>
     ///     ''' The player hit something

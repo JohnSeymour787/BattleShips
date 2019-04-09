@@ -1,4 +1,4 @@
-public enum Direction
+﻿public enum Direction
 {
     /// <summary>
     ///     ''' The ship is oriented left/right
