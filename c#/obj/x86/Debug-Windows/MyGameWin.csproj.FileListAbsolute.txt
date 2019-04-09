@@ -54,3 +54,7 @@ C:\Users\Natalie Sholakis\Documents\2019\Uni\Semester 1\SWE20001 - Development P
 C:\Users\Natalie Sholakis\Documents\2019\Uni\Semester 1\SWE20001 - Development Project 1 - Tools and Practices\BattleShips\c#\obj\x86\Debug-Windows\MyGameWin.csproj.CopyComplete
 C:\Users\Natalie Sholakis\Documents\2019\Uni\Semester 1\SWE20001 - Development Project 1 - Tools and Practices\BattleShips\c#\obj\x86\Debug-Windows\MyGame.exe
 C:\Users\Natalie Sholakis\Documents\2019\Uni\Semester 1\SWE20001 - Development Project 1 - Tools and Practices\BattleShips\c#\obj\x86\Debug-Windows\MyGame.pdb
+C:\Users\John\Google Drive\Swinburne\2019\Semester 1\SWE20001 Development Project 1 - Tools and Practices\Battleships\BattleShips\BattleShips\c#\obj\x86\Debug-Windows\MyGameWin.csprojAssemblyReference.cache
+C:\Users\John\Google Drive\Swinburne\2019\Semester 1\SWE20001 Development Project 1 - Tools and Practices\Battleships\BattleShips\BattleShips\c#\obj\x86\Debug-Windows\MyGameWin.csproj.CoreCompileInputs.cache
+C:\Users\John\Google Drive\Swinburne\2019\Semester 1\SWE20001 Development Project 1 - Tools and Practices\Battleships\BattleShips\BattleShips\c#\obj\x86\Debug-Windows\MyGame.exe
+C:\Users\John\Google Drive\Swinburne\2019\Semester 1\SWE20001 Development Project 1 - Tools and Practices\Battleships\BattleShips\BattleShips\c#\obj\x86\Debug-Windows\MyGame.pdb
