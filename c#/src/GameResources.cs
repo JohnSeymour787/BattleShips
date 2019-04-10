@@ -66,10 +66,10 @@ public static class GameResources
     }
 
     /// <summary>
-    ///     ''' Gets a Font Loaded in the Resources
-    ///     ''' </summary>
-    ///     ''' <param name="font">Name of Font</param>
-    ///     ''' <returns>The Font Loaded with this Name</returns>
+    /// Gets a Font Loaded in the Resources
+    /// </summary>
+    /// <param name="font">Name of Font</param>
+    /// <returns>The Font Loaded with this Name</returns>
 
     public static Font GameFont(string font)
     {
@@ -77,10 +77,10 @@ public static class GameResources
     }
 
     /// <summary>
-    ///     ''' Gets an Image loaded in the Resources
-    ///     ''' </summary>
-    ///     ''' <param name="image">Name of image</param>
-    ///     ''' <returns>The image loaded with this name</returns>
+    /// Gets an Image loaded in the Resources
+    /// </summary>
+    /// <param name="image">Name of image</param>
+    /// <returns>The image loaded with this name</returns>
 
     public static Bitmap GameImage(string image)
     {
@@ -88,10 +88,10 @@ public static class GameResources
     }
 
     /// <summary>
-    ///     ''' Gets an sound loaded in the Resources
-    ///     ''' </summary>
-    ///     ''' <param name="sound">Name of sound</param>
-    ///     ''' <returns>The sound with this name</returns>
+    /// Gets an sound loaded in the Resources
+    /// </summary>
+    /// <param name="sound">Name of sound</param>
+    /// <returns>The sound with this name</returns>
 
     public static SoundEffect GameSound(string sound)
     {
@@ -99,10 +99,10 @@ public static class GameResources
     }
 
     /// <summary>
-    ///     ''' Gets the music loaded in the Resources
-    ///     ''' </summary>
-    ///     ''' <param name="music">Name of music</param>
-    ///     ''' <returns>The music with this name</returns>
+    /// Gets the music loaded in the Resources
+    /// </summary>
+    /// <param name="music">Name of music</param>
+    /// <returns>The music with this name</returns>
 
     public static Music GameMusic(string music)
     {
@@ -122,9 +122,9 @@ public static class GameResources
     private static SoundEffect _StartSound;
 
     /// <summary>
-    ///     ''' The Resources Class stores all of the Games Media Resources, such as Images, Fonts
-    ///     ''' Sounds, Music.
-    ///     ''' </summary>
+    /// The Resources Class stores all of the Games Media Resources, such as Images, Fonts
+    /// Sounds, Music.
+    /// </summary>
 
     public static void LoadResources()
     {
@@ -206,7 +206,7 @@ public static class GameResources
         const int BG_Y = 453;
 
         int fullW;
-        Rectangle toDraw;
+        Rectangle toDraw = new Rectangle();
 
         fullW = 260 * number / STEPS;
         SwinGame.DrawBitmap(_LoaderEmpty, BG_X, BG_Y);
@@ -217,7 +217,7 @@ public static class GameResources
         toDraw.Y = TY;
         toDraw.Width = TW;
         toDraw.Height = TH;
-        SwinGame.DrawTextLines(message, Color.White, Color.Transparent, _LoadingFont, FontAlignment.AlignCenter, toDraw);
+        SwinGame.DrawText(message, Color.White, Color.Transparent, _LoadingFont, FontAlignment.AlignCenter, toDraw);
         // SwinGame.DrawTextLines(message, Color.White, Color.Transparent, _LoadingFont, FontAlignment.AlignCenter, TX, TY, TW, TH)
 
         SwinGame.RefreshScreen();
@@ -271,29 +271,25 @@ public static class GameResources
 
     private static void FreeFonts()
     {
-        Font obj;
-        foreach (var obj in _Fonts.Values)
+        foreach (Font obj in _Fonts.Values)
             SwinGame.FreeFont(obj);
     }
 
     private static void FreeImages()
     {
-        Bitmap obj;
-        foreach (var obj in _Images.Values)
+        foreach (Bitmap obj in _Images.Values)
             SwinGame.FreeBitmap(obj);
     }
 
     private static void FreeSounds()
     {
-        SoundEffect obj;
-        foreach (var obj in _Sounds.Values)
+        foreach (SoundEffect obj in _Sounds.Values)
             Audio.FreeSoundEffect(obj);
     }
 
     private static void FreeMusic()
     {
-        Music obj;
-        foreach (var obj in _Music.Values)
+        foreach (Music obj in _Music.Values)
             Audio.FreeMusic(obj);
     }
 
