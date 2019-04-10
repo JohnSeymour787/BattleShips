@@ -1,7 +1,8 @@
 /// <summary>
-/// ''' This includes a number of utility methods for
-/// ''' drawing and interacting with the Mouse.
-/// ''' </summary>
+/// This includes a number of utility methods for
+/// drawing and interacting with the Mouse.
+/// </summary>
+/// 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,20 +16,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
 
+using SwinGameSDK;
+
 static class UtilityFunctions
 {
-    public const static int FIELD_TOP = 122;
-    public const static int FIELD_LEFT = 349;
-    public const static int FIELD_WIDTH = 418;
-    public const static int FIELD_HEIGHT = 418;
+    public const int FIELD_TOP = 122;
+    public const int FIELD_LEFT = 349;
+    public const int FIELD_WIDTH = 418;
+    public const int FIELD_HEIGHT = 418;
 
-    public const static int MESSAGE_TOP = 548;
+    public const int MESSAGE_TOP = 548;
 
-    public const static int CELL_WIDTH = 40;
-    public const static int CELL_HEIGHT = 40;
-    public const static int CELL_GAP = 2;
+    public const int CELL_WIDTH = 40;
+    public const int CELL_HEIGHT = 40;
+    public const int CELL_GAP = 2;
 
-    public const static int SHIP_GAP = 3;
+    public const int SHIP_GAP = 3;
 
     private readonly static Color SMALL_SEA = SwinGame.RGBAColor(6, 60, 94, 255);
     private readonly static Color SMALL_SHIP = Color.Gray;
@@ -45,17 +48,17 @@ static class UtilityFunctions
     private readonly static Color SHIP_OUTLINE_COLOR = Color.White;
     private readonly static Color MESSAGE_COLOR = SwinGame.RGBAColor(2, 167, 252, 255);
 
-    public const static int ANIMATION_CELLS = 7;
-    public const static int FRAMES_PER_CELL = 8;
+    public const int ANIMATION_CELLS = 7;
+    public const int FRAMES_PER_CELL = 8;
 
     /// <summary>
-    ///     ''' Determines if the mouse is in a given rectangle.
-    ///     ''' </summary>
-    ///     ''' <param name="x">the x location to check</param>
-    ///     ''' <param name="y">the y location to check</param>
-    ///     ''' <param name="w">the width to check</param>
-    ///     ''' <param name="h">the height to check</param>
-    ///     ''' <returns>true if the mouse is in the area checked</returns>
+    /// Determines if the mouse is in a given rectangle.
+    /// </summary>
+    /// <param name="x">the x location to check</param>
+    /// <param name="y">the y location to check</param>
+    /// <param name="w">the width to check</param>
+    /// <param name="h">the height to check</param>
+    /// <returns>true if the mouse is in the area checked</returns>
     public static bool IsMouseInRectangle(int x, int y, int w, int h)
     {
         Point2D mouse;
@@ -75,21 +78,21 @@ static class UtilityFunctions
     }
 
     /// <summary>
-    ///     ''' Draws a large field using the grid and the indicated player's ships.
-    ///     ''' </summary>
-    ///     ''' <param name="grid">the grid to draw</param>
-    ///     ''' <param name="thePlayer">the players ships to show</param>
-    ///     ''' <param name="showShips">indicates if the ships should be shown</param>
+    /// Draws a large field using the grid and the indicated player's ships.
+    /// </summary>
+    /// <param name="grid">the grid to draw</param>
+    /// <param name="thePlayer">the players ships to show</param>
+    /// <param name="showShips">indicates if the ships should be shown</param>
     public static void DrawField(ISeaGrid grid, Player thePlayer, bool showShips)
     {
         DrawCustomField(grid, thePlayer, false, showShips, FIELD_LEFT, FIELD_TOP, FIELD_WIDTH, FIELD_HEIGHT, CELL_WIDTH, CELL_HEIGHT, CELL_GAP);
     }
 
     /// <summary>
-    ///     ''' Draws a small field, showing the attacks made and the locations of the player's ships
-    ///     ''' </summary>
-    ///     ''' <param name="grid">the grid to show</param>
-    ///     ''' <param name="thePlayer">the player to show the ships of</param>
+    /// Draws a small field, showing the attacks made and the locations of the player's ships
+    /// </summary>
+    /// <param name="grid">the grid to show</param>
+    /// <param name="thePlayer">the player to show the ships of</param>
     public static void DrawSmallField(ISeaGrid grid, Player thePlayer)
     {
         const int SMALL_FIELD_LEFT = 39;
@@ -104,19 +107,19 @@ static class UtilityFunctions
     }
 
     /// <summary>
-    ///     ''' Draws the player's grid and ships.
-    ///     ''' </summary>
-    ///     ''' <param name="grid">the grid to show</param>
-    ///     ''' <param name="thePlayer">the player to show the ships of</param>
-    ///     ''' <param name="small">true if the small grid is shown</param>
-    ///     ''' <param name="showShips">true if ships are to be shown</param>
-    ///     ''' <param name="left">the left side of the grid</param>
-    ///     ''' <param name="top">the top of the grid</param>
-    ///     ''' <param name="width">the width of the grid</param>
-    ///     ''' <param name="height">the height of the grid</param>
-    ///     ''' <param name="cellWidth">the width of each cell</param>
-    ///     ''' <param name="cellHeight">the height of each cell</param>
-    ///     ''' <param name="cellGap">the gap between the cells</param>
+    /// Draws the player's grid and ships.
+    /// </summary>
+    /// <param name="grid">the grid to show</param>
+    /// <param name="thePlayer">the player to show the ships of</param>
+    /// <param name="small">true if the small grid is shown</param>
+    /// <param name="showShips">true if ships are to be shown</param>
+    /// <param name="left">the left side of the grid</param>
+    /// <param name="top">the top of the grid</param>
+    /// <param name="width">the width of the grid</param>
+    /// <param name="height">the height of the grid</param>
+    /// <param name="cellWidth">the width of each cell</param>
+    /// <param name="cellHeight">the height of each cell</param>
+    /// <param name="cellGap">the gap between the cells</param>
     private static void DrawCustomField(ISeaGrid grid, Player thePlayer, bool small, bool showShips, int left, int top, int width, int height, int cellWidth, int cellHeight, int cellGap)
     {
         // SwinGame.FillRectangle(Color.Blue, left, top, width, height)
@@ -133,12 +136,12 @@ static class UtilityFunctions
             {
                 colLeft = left + (cellGap + cellWidth) * col;
 
-                Color fillColor;
+                Color fillColor = new Color(0);
                 bool draw;
 
                 draw = true;
 
-                switch (grid.Item(row, col))
+                switch(grid.Item)
                 {
                     case object _ when TileView.Ship:
                         {
@@ -191,7 +194,7 @@ static class UtilityFunctions
         string shipName;
 
         // Draw the ships
-        foreach (Ship s in thePlayer)
+        foreach (Ship s in thePlayer.ToList())
         {
             if (s == null || !s.IsDeployed)
                 continue;
@@ -213,7 +216,7 @@ static class UtilityFunctions
             }
 
             if (!small)
-                SwinGame.DrawBitmap(GameImage(shipName), colLeft, rowTop);
+                SwinGame.DrawBitmap(shipName, colLeft, rowTop);
             else
             {
                 SwinGame.FillRectangle(SHIP_FILL_COLOR, colLeft, rowTop, shipWidth, shipHeight);
@@ -225,10 +228,10 @@ static class UtilityFunctions
     private static string _message;
 
     /// <summary>
-    ///     ''' The message to display
-    ///     ''' </summary>
-    ///     ''' <value>The message to display</value>
-    ///     ''' <returns>The message to display</returns>
+    /// The message to display
+    /// </summary>
+    /// <value>The message to display</value>
+    /// <returns>The message to display</returns>
     public static string Message
     {
         get
@@ -242,11 +245,11 @@ static class UtilityFunctions
     }
 
     /// <summary>
-    ///     ''' Draws the message to the screen
-    ///     ''' </summary>
+    /// Draws the message to the screen
+    /// </summary>
     public static void DrawMessage()
     {
-        SwinGame.DrawText(Message, MESSAGE_COLOR, GameFont("Courier"), FIELD_LEFT, MESSAGE_TOP);
+        SwinGame.DrawText(Message, MESSAGE_COLOR, "Courier", FIELD_LEFT, MESSAGE_TOP);
     }
 
     /// <summary>
@@ -254,27 +257,27 @@ static class UtilityFunctions
     ///     ''' </summary>
     public static void DrawBackground()
     {
-        switch (CurrentState)
+        switch (GameController.CurrentState)
         {
             case object _ when GameState.ViewingMainMenu:
             case object _ when GameState.ViewingGameMenu:
             case object _ when GameState.AlteringSettings:
             case object _ when GameState.ViewingHighScores:
                 {
-                    SwinGame.DrawBitmap(GameImage("Menu"), 0, 0);
+                    SwinGame.DrawBitmap("Menu", 0, 0);
                     break;
                 }
 
             case object _ when GameState.Discovering:
             case object _ when GameState.EndingGame:
                 {
-                    SwinGame.DrawBitmap(GameImage("Discovery"), 0, 0);
+                    SwinGame.DrawBitmap("Discovery", 0, 0);
                     break;
                 }
 
             case object _ when GameState.Deploying:
                 {
-                    SwinGame.DrawBitmap(GameImage("Deploy"), 0, 0);
+                    SwinGame.DrawBitmap("Deploy", 0, 0);
                     break;
                 }
 
@@ -305,7 +308,7 @@ static class UtilityFunctions
         Sprite s;
         Bitmap imgObj;
 
-        imgObj = GameImage(image);
+        imgObj = new Bitmap(image);
         imgObj.SetCellDetails(40, 40, 3, 3, 7);
 
         AnimationScript animation;
@@ -325,7 +328,7 @@ static class UtilityFunctions
         foreach (Sprite s in _Animations)
         {
             SwinGame.UpdateSprite(s);
-            if (s.animationHasEnded)
+            if (s.AnimationHasEnded)
                 ended.Add(s);
         }
 
@@ -348,7 +351,7 @@ static class UtilityFunctions
         for (i = 1; i <= ANIMATION_CELLS * FRAMES_PER_CELL; i++)
         {
             UpdateAnimations();
-            DrawScreen();
+            GameController.DrawScreen();
         }
     }
 }
