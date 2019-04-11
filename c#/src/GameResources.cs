@@ -161,8 +161,14 @@ public static class GameResources
 
     private static void ShowLoadingScreen()
     {
+        //_Background = SwinGame.LoadBitmap(SwinGame.PathToResource("SplashBack.png", ResourceKind.BitmapResource));
+        string cake = SwinGame.PathToResource("SplashBack.png", ResourceKind.BitmapResource);
+        Bitmap bitmap = SwinGame.BitmapNamed("SplashBack.png");
+        _Background = new Bitmap((cake));
+        int i = 0;
         _Background = SwinGame.LoadBitmap(SwinGame.PathToResource("SplashBack.png", ResourceKind.BitmapResource));
-        SwinGame.DrawBitmap(_Background, 0, 0);
+        //SwinGame.DrawBitmap(_Background, 0, 0);
+        SwinGame.DrawBitmap(cake, 0, 0);
         SwinGame.RefreshScreen();
         SwinGame.ProcessEvents();
 

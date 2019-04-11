@@ -56,6 +56,11 @@ public class AIHardPlayer : AIPlayer
             }
         }
 
+        /// <summary>
+        /// Constructor to initialise object and fields
+        /// </summary>
+        /// <param name="shootat">The target the AI last shot at</param>
+        /// <param name="source">The source that added this location as a target</param>
         internal Target(Location shootat, Location source)
         {
             _ShotAt = shootat;
