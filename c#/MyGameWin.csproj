@@ -46,11 +46,7 @@
     <Content Include="obj\x86\Debug-Windows\MyGameWin.csproj.FileListAbsolute.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\EndingGameController.cs" />
-    <Compile Include="src\Game Controller.cs" />
     <Compile Include="src\GameLogic.cs" />
-    <Compile Include="src\GameResources.cs" />
-    <Compile Include="src\GameState.cs" />
     <Compile Include="src\Model\AIHardPlayer.cs" />
     <Compile Include="src\Model\AIMediumPlayer.cs" />
     <Compile Include="src\Model\AIOption.cs" />
