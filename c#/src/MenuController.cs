@@ -273,8 +273,8 @@ static class MenuController
 	{
 		switch (button) {
 			case MAIN_MENU_PLAY_BUTTON:
-				GameController.StartGame();
-				break;
+                GameController.StartGame();
+                break;
 			case MAIN_MENU_SETUP_BUTTON:
 				GameController.AddNewState(GameState.AlteringSettings);
 				break;
@@ -283,6 +283,7 @@ static class MenuController
 				break;
 			case MAIN_MENU_QUIT_BUTTON:
 				GameController.EndCurrentState();
+                HighScoreController.SaveScores();
 				break;
 		}
 	}
