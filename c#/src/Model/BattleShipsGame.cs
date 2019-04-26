@@ -89,6 +89,9 @@ public class BattleShipsGame
 			newAttack = new AttackResult(ResultOfAttack.GameOver, newAttack.Ship, newAttack.Text, row, col);
 		}
 
+		if (newAttack.Value == ResultOfAttack.Miss)
+			Player.HasControl = false;
+
 		if (AttackCompleted != null) {
 			AttackCompleted(this, newAttack);
 		}
@@ -96,6 +99,7 @@ public class BattleShipsGame
 		//change player if the last hit was a miss
 		if (newAttack.Value == ResultOfAttack.Miss) {
 			_playerIndex = otherPlayer;
+			Player.HasControl = true;
 		}
 
 		return newAttack;

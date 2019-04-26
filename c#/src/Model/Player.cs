@@ -40,6 +40,12 @@ public class Player : IEnumerable<Ship>
 		set { _enemyGrid = value; }
 	}
 
+	private bool _hasControl;
+	public bool HasControl {
+		get { return _hasControl; }
+		set { _hasControl = value; }
+	}
+
 	public Player(BattleShipsGame controller)
 	{
 		_game = controller;
