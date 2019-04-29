@@ -110,7 +110,8 @@ static class DeploymentController
 				try {
 					GameController.HumanPlayer.PlayerGrid.MoveShip(row, col, _selectedShip, _currentDirection);
 				} catch (Exception ex) {
-					Audio.PlaySoundEffect(GameResources.GameSound("Error"));
+                    if (!AudioController._mutedSound)
+					    Audio.PlaySoundEffect(GameResources.GameSound("Error"));
 					UtilityFunctions.Message = ex.Message;
 				}
 			}
