@@ -9,6 +9,8 @@ using SwinGameSDK;
 
 public static class AudioController
 {
+    //Static field checked by other classes and objects when a sound effect needs to be played
+    //When value is true, sound effect will not be played.
     public static bool _mutedSound = false;
 
     public static void Mute()

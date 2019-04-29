@@ -166,6 +166,7 @@ public static class GameController
 		{
 			case ResultOfAttack.Destroyed:
 				PlayHitSequence(result.Row, result.Column, isHuman);
+                //Only playing the sound effect if the AudioController's static boolean variable is false.
 				if (!AudioController._mutedSound)
 					Audio.PlaySoundEffect(GameResources.GameSound("Sink"));
 
