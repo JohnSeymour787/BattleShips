@@ -83,7 +83,7 @@ public static class GameController
 				_ai = new AIHardPlayer(_theGame);
 				break;
 			default:
-				_ai = new AIMediumPlayer(_theGame);
+				_ai = new AIHardPlayer(_theGame);
 				break;
 		}
 
@@ -125,7 +125,8 @@ public static class GameController
 			UtilityFunctions.AddExplosion(row, column);
 		}
 
-		Audio.PlaySoundEffect(GameResources.GameSound("Hit"));
+		if (!AudioController._mutedSound)
+			Audio.PlaySoundEffect(GameResources.GameSound("Hit"));
 
 		UtilityFunctions.DrawAnimationSequence();
 	}
@@ -136,7 +137,8 @@ public static class GameController
 			UtilityFunctions.AddSplash(row, column);
 		}
 
-		Audio.PlaySoundEffect(GameResources.GameSound("Miss"));
+		if (!AudioController._mutedSound)
+			Audio.PlaySoundEffect(GameResources.GameSound("Miss"));
 
 		UtilityFunctions.DrawAnimationSequence();
 	}
@@ -160,36 +162,53 @@ public static class GameController
 			UtilityFunctions.Message = "The AI " + result.ToString();
 		}
 
-		switch (result.Value) {
+		switch (result.Value) 
+		{
 			case ResultOfAttack.Destroyed:
 				PlayHitSequence(result.Row, result.Column, isHuman);
-				Audio.PlaySoundEffect(GameResources.GameSound("Sink"));
+                //Only playing the sound effect if the AudioController's static boolean variable is false.
+				if (!AudioController._mutedSound)
+					Audio.PlaySoundEffect(GameResources.GameSound("Sink"));
 
 				break;
+
 			case ResultOfAttack.GameOver:
 				PlayHitSequence(result.Row, result.Column, isHuman);
-				Audio.PlaySoundEffect(GameResources.GameSound("Sink"));
+				if (!AudioController._mutedSound)
+				{
+					Audio.PlaySoundEffect(GameResources.GameSound("Sink"));
 
-				while (Audio.SoundEffectPlaying(GameResources.GameSound("Sink"))) {
-					SwinGame.Delay(10);
-					SwinGame.RefreshScreen();
+					while (Audio.SoundEffectPlaying(GameResources.GameSound("Sink")))
+					{
+						SwinGame.Delay(10);
+						SwinGame.RefreshScreen();
+					}
 				}
 
-				if (HumanPlayer.IsDestroyed) {
-					Audio.PlaySoundEffect(GameResources.GameSound("Lose"));
-				} else {
-					Audio.PlaySoundEffect(GameResources.GameSound("Winner"));
+				if (HumanPlayer.IsDestroyed) 
+				{
+					if (!AudioController._mutedSound)
+						Audio.PlaySoundEffect(GameResources.GameSound("Lose"));
+				} 
+				else 
+				{
+					if (!AudioController._mutedSound)
+						Audio.PlaySoundEffect(GameResources.GameSound("Winner"));
 				}
 
 				break;
+
 			case ResultOfAttack.Hit:
 				PlayHitSequence(result.Row, result.Column, isHuman);
 				break;
+
 			case ResultOfAttack.Miss:
 				PlayMissSequence(result.Row, result.Column, isHuman);
 				break;
+
 			case ResultOfAttack.ShotAlready:
-				Audio.PlaySoundEffect(GameResources.GameSound("Error"));
+				if (!AudioController._mutedSound)
+					Audio.PlaySoundEffect(GameResources.GameSound("Error"));
 				break;
 		}
 	}
@@ -272,6 +291,8 @@ public static class GameController
 	{
 		//Read incoming input events
 		SwinGame.ProcessEvents();
+
+        AudioController.Mute();
 
 		switch (CurrentState) {
 			case GameState.ViewingMainMenu:
